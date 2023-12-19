@@ -1,72 +1,42 @@
+//консольный калькулятор
+
 import java.util.Scanner;
 
-public class Main {
+public class Calculator {
+    public static void main(String[] args){
+        double a, b;//объявление переменных
+        Scanner input = new Scanner(System.in);//новый объект для считывания ввода чисел пользователем
 
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Введите выражение: ");
-		String expression = scanner.nextLine();
-		double result = calculate(expression);
-		System.out.printf("Результат: %f%n", result);
-	}
+        System.out.print("Введите первое число: ");//введение первого числа
+        a = input.nextDouble();
 
-	private static double calculate(String expression) {
-		char[] chars = expression.toCharArray();
-		Double result = new Double(0);
-		for (int i = 0; i < chars.length; i++) {
-			if (chars[i] == '+' || chars[i] == '-' || chars[i] == '*' || chars[i] == '/') {
-				switch (chars[i]) {
-				case '+':
-					result += calculatePart(expression, i);
-					break;
-				case '-':
-       result -= calculatePart(expression, i);
-break;
-case ‘*’:
-result *= calculatePart(expression, i);
-break;
-case ‘/’:
-try {
-result /= calculatePart(expression, i);
-} catch (Exception e) {
-System.err.println(“Деление на ноль!”);
-}
-break;
-}
-} else {
-int number = Integer.parseInt(String.valueOf(chars[i]));
-result = result + number;
-}
-}
-return result;
-}
+        System.out.print("\nВыберите операцию (+, -, *, /): ");//выбор операции
+        String operator = input.next();
 
-private static double calculatePart(String expression, int index) {
-	StringBuilder part1 = new StringBuilder();
-	StringBuilder part2 = new StringBuilder();
+        System.out.print("\nВведите второе число: ");//ввод второго числа
+        b = input.nextDouble();
+        
+	//реализация операций и вывод ошибок
+        switch (operator){
+            case "+":
+                a += b;
+                break;
+            case "-":
+                a -= b;
+                break;
+            case "*":
+                a *= b;
+                break;
+            case "/":
+                if (b != 0)
+                    a /= b;
+                else
+                    System.err.println("Нельзя делить на ноль");
+                break;
+            default:
+                System.err.println("Неправильная операция");
+        }
 
-	boolean first = true;       
-  for (int i = index - 1; i >= 0; i–) {
-part1.append(expression.charAt(i));
-first &= Character.isDigit(expression.charAt(i)) || expression.charAt(i) == ‘.’;
+        System.out.printf("%.2f", a);
+    }
 }
-for (int i = index + 1; i < expression.length(); i++) {
-part2.append(expression.charAt(i));
-Character.isDigit(expression.charAt(i)) && expression.charAt(i) != ‘.’ && Character.isLetter(expression.charAt(i)));
-}
-
-	if (!first) {
-		throw new IllegalArgumentException("Invalid input");
-	}
-	
-	try {
-		double part1Value = Double.parseDouble(part1.toString());
-		double part2Value = Double.parseDouble(part2.toString());
-
-		return part1Value - part2Value;
-	} catch (NumberFormatException e) {
-		e.printStackTrace();
-	}
-	
-	return 0;
-}}
